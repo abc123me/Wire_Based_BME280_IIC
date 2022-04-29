@@ -43,42 +43,7 @@
 #define _BME280_CALIB_H5 0xE5
 #define _BME280_CALIB_H6 0xE7
 
-class BME280 {
-private:
-	// Temperature compensation values
-	uint16_t t1;
-	int16_t t2, t3;
-	// Fine temperature compensation
-	int32_t t_fine, t_fine_adjust = 0;
-	// Pressure compensation values
-	uint16_t p1;
-	int16_t p2, p3, p4, p5;
-	int16_t p6, p7, p8, p9; 
-	// Humidity compensation values
-	uint8_t h1, h3;
-	int16_t h2, h4, h5; 
-	int8_t h6; 
-	// Device constants
-	uint8_t addr, chipID = 0xFF;
-	
-	uint16_t read16(uint8_t rgr);
-	void loadCompensationValues();
-public:
-	uint8_t begin(uint8_t addr, uint32_t speed);
-	inline uint8_t begin(uint8_t addr) { return begin(addr, BME280_DEFAULT_SPEED); }
-	inline uint8_t begin() { return begin(BME280_ADDR0, BME280_DEFAULT_SPEED); }
-	uint8_t readChipID();
-	float readAltitudeM(float seaLevel);
-	float readHumidityRH();
-	float readTemperatureC();
-	float readPressurePa();
-	
-	inline float readTemperatureF() { return readTemperatureC() * 1.8 + 32.0; };
-	inline float readTemperatureK() { return readTemperatureC() - 273.15; };
-	inline float readPressurePSI() { return readPressurePa() * 1.450377e-4; };
-	inline float readPressureBAR() { return readPressurePa() * 1e-5; };
-	inline uint8_t hasHumidity() { return chipID == 0x59; }
-};
+
 enum E_BME280_SAMPLING {
 	BME280_SAMPLING_NONE = 0b000,
 	BME280_SAMPLING_X1 = 0b001,
@@ -108,6 +73,46 @@ enum E_BME280_STANDBY {
 	BME280_STANDBY_MS_250 = 0b011,
 	BME280_STANDBY_MS_500 = 0b100,
 	BME280_STANDBY_MS_1000 = 0b101
+};
+
+class BME280 {
+private:
+	// Temperature compensation values
+	uint16_t t1;
+	int16_t t2, t3;
+	// Fine temperature compensation
+	int32_t t_fine, t_fine_adjust = 0;
+	// Pressure compensation values
+	uint16_t p1;
+	int16_t p2, p3, p4, p5;
+	int16_t p6, p7, p8, p9; 
+	// Humidity compensation values
+	uint8_t h1, h3;
+	int16_t h2, h4, h5; 
+	int8_t h6; 
+	// Device constants
+	uint8_t addr, chipID = 0xFF;
+	
+	uint16_t read16(uint8_t rgr);
+	void loadCompensationValues();
+public:
+	uint8_t begin(uint8_t addr, uint32_t speed);
+	inline uint8_t begin(uint8_t addr) { return begin(addr, BME280_DEFAULT_SPEED); }
+	inline uint8_t begin() { return begin(BME280_ADDR0, BME280_DEFAULT_SPEED); }
+	inline uint8_t readChipID() { return chipID; }
+	void softReset();
+	void setConfiguration(E_BME280_STANDBY standbyTime, E_BME280_FILTERING filtering);
+	void setMeasurementModes(E_BME280_SAMPLING temperatureSampling, E_BME280_SAMPLING preessureSampling, E_BME280_SAMPLING humiditySampling, E_BME280_POWER_MODE powerMode);
+	float readAltitudeM(float seaLevel);
+	float readHumidityRH();
+	float readTemperatureC();
+	float readPressurePa();
+	
+	inline float readTemperatureF() { return readTemperatureC() * 1.8 + 32.0; };
+	inline float readTemperatureK() { return readTemperatureC() - 273.15; };
+	inline float readPressurePSI() { return readPressurePa() * 1.450377e-4; };
+	inline float readPressureBAR() { return readPressurePa() * 1e-5; };
+	inline uint8_t hasHumidity() { return chipID == 0x59; }
 };
 
 #endif

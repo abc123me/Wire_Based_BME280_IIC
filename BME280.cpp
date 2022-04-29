@@ -44,33 +44,41 @@ uint16_t BME280::read16(uint8_t rgr) {
 	tmp |= reqByte(addr, rgr + 1) << 8;
 	return tmp;
 }
-uint8_t BME280::readChipID() {
-	chipID = reqByte(addr, _BME280_CHIP_ID_RGR);
-	return chipID;
-}
 uint8_t BME280::begin(uint8_t addr, uint32_t speed) {
 	this->addr = addr;
 	
 	// Verify chip ID
 	Wire.begin(speed);
-	readChipID();
+	chipID = reqByte(addr, _BME280_CHIP_ID_RGR);
 	if(chipID != 0x58 && chipID != 0x59)
 		return 0;
 	
-	// Reset the sensor
-	writeReg(addr, _BME280_SOFT_RESET_RGR, 0xB6);
-	
-	// Turn on humidity sensor
-	writeReg(addr, _BME280_CTRL_HUMI_RGR, 0b00000001);
-	// Turn on temperature & pressure sensor
-	writeReg(addr, _BME280_CTRL_MEAS_RGR, 0b00100111);
-	// 0.5ms standby, filter coeff. 2x, SPI off
-	writeReg(addr, _BME280_CONFIG_RGR, 0b0000010); 
+	softReset();
+	setMeasurementModes(BME280_SAMPLING_X4, BME280_SAMPLING_X4, BME280_SAMPLING_X4, BME280_MODE_NORMAL);
+	setConfiguration(BME280_STANDBY_MS_0_5, BME280_FILTER_X2);
 	
 	
 	// Load compensation values
 	this->loadCompensationValues();
 	return 1;
+}
+
+void BME280::softReset() {
+	writeReg(addr, _BME280_SOFT_RESET_RGR, 0xB6);
+}
+void BME280::setConfiguration(E_BME280_STANDBY standbyTime, E_BME280_FILTERING filtering) {
+	uint8_t dat = 0b0000001;
+	dat |= (filtering << 1);
+	dat |= (standbyTime << 4);
+	writeReg(addr, _BME280_CTRL_HUMI_RGR, dat);
+}
+void BME280::setMeasurementModes(E_BME280_SAMPLING temperatureSampling, E_BME280_SAMPLING pressureSampling, E_BME280_SAMPLING humiditySampling, E_BME280_POWER_MODE powerMode) {
+	uint8_t dat = humiditySampling;
+	writeReg(addr, _BME280_CTRL_HUMI_RGR, dat);
+	dat = powerMode;
+	dat |= (pressureSampling << 2);
+	dat |= (temperatureSampling << 5);
+	writeReg(addr, _BME280_CTRL_MEAS_RGR, dat);
 }
 void BME280::loadCompensationValues() {
   // Temperature calibration

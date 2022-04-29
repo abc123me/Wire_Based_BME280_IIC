@@ -12,6 +12,9 @@ BME280						KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
+setConfiguration			KEYWORD2
+setMeasurementModes			KEYWORD2
+softReset					KEYWORD2
 hasHumidity					KEYWORD2
 readHumidityRH				KEYWORD2
 readTemperatureC			KEYWORD2
