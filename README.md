@@ -1,7 +1,7 @@
 # Wire based BMP/BME280 library (works with STM32)
 A Wire based BMP/BME280 library intended for ARM Cortex STM32 devices, but since it uses the `Wire.h` library it works with ***EVERYTHING*** and yes, you can use it to take over the world!
 ## Usage
- 1. Download the [latest release](https://github.com/abc123me/Wire_Based_BME280/releases)
+ 1. Download the [latest release](https://github.com/abc123me/Wire_Based_BME280_IIC/releases)
  2. Extract and install into your arduino libraries folder
  3. Select Examples/BME280/ and experiment with them
 ## Boards tested
