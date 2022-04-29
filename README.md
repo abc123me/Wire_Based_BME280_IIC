@@ -13,7 +13,7 @@ BME280();                                  // Default constructor
 void begin(uint8_t addr, uint32_t speed);  // Initializes the device with a custom clock speed & address
 void begin(uint8_t addr);                  // Initializes the device with a custom address @ 100KHz
 void begin();                              // Initializes the device using address 0x76 @ 100KHz
-uint8_t readChipID();                      // Reads the chip ID
+uint8_t chipID();                          // Gets the chip ID
 float readAltitudeM(float seaLevel);       // Reads altitude from sea level
 float readHumidityRH();                    // Reads humidity as percent relative humidity
 float readTemperatureK();                  // Reads temperature in degrees kelvin
