@@ -1,0 +1,34 @@
+#######################################
+# Syntax Coloring Map For MPU6050
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+BME280						KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+hasHumidity					KEYWORD2
+readHumidityRH				KEYWORD2
+readTemperatureC			KEYWORD2
+readTemperatureF			KEYWORD2
+readTemperatureK			KEYWORD2
+readPressurePa				KEYWORD2
+readPressureBAR				KEYWORD2
+readPressurePSI				KEYWORD2
+readAltitudeM				KEYWORD2
+readChipID					KEYWORD2
+begin						KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+# Chipsets
+BME280_ADDR0			    LITERAL1
+BME280_ADDR1			    LITERAL1
+BME280_DEFAULT_SPEED		LITERAL1
