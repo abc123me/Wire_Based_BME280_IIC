@@ -7,7 +7,6 @@ A Wire based BMP/BME280 library intended for ARM Cortex STM32 devices, but since
 ## Boards tested
  - STM32F103 (32K) @ 72MHz w/ 100KHz I2C
 ## Documentation
-### MPU6050
 ```c
 BME280();                                  // Default constructor
 void begin(uint8_t addr, uint32_t speed);  // Initializes the device with a custom clock speed & address
